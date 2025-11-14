@@ -1,0 +1,1 @@
+{"name":"Local: 1_4_A","url":"/Users/_d-one_/Desktop/SegTree/1_4_A. Sign Alteration.cpp","tests":[{"id":1759512730412,"input":"3\n1 2 3\n5\n1 1 2\n1 1 3\n1 2 3\n0 2 1\n1 1 3\n","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/_d-one_/Desktop/SegTree/1_4_A. Sign Alteration.cpp","group":"local","local":true}

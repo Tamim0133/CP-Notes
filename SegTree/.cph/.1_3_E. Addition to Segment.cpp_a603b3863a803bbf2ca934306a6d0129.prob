@@ -1,0 +1,1 @@
+{"name":"Local: 1_3_E","url":"/Users/_d-one_/Desktop/SegTree/1_3_E. Addition to Segment.cpp","tests":[{"id":1759498252900,"input":"5 5\n1 0 3 3\n2 1\n1 2 4 4\n2 3\n2 4\n","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"/Users/_d-one_/Desktop/SegTree/1_3_E. Addition to Segment.cpp","group":"local","local":true}

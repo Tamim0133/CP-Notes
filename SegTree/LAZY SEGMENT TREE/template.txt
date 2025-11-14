@@ -1,0 +1,164 @@
+
+struct node // Node Ki represent korteche?
+{
+    int sum;
+    node(int vl = 0)
+    {
+        sum = vl;
+    }
+};
+
+node merge(node &a, node &b) // Merge Step e ki Hobe ?
+{
+    node res;
+    res.sum = a.sum + b.sum;
+    return res;
+}
+
+struct LazySegTree
+{
+
+#define rc v * 2 + 1
+#define lc v * 2
+
+    int n;¡
+
+    vector<node> tree;
+    vector<int> lazy;
+
+    vector<bool> is_lazy;
+
+    void init(int sz)
+    {
+        n = sz;
+        tree.assign(4 * n, node());
+        lazy.assign(4 * n, 0);
+
+        is_lazy.assign(4 * n, false);
+    }
+
+    void push(int v, int tl, int tr)
+    {
+        if (is_lazy[v])
+        {
+            tree[v].sum += lazy[v] * (tr - tl + 1); // Lazy push krbo , so update curr node
+
+            if (tl != tr)
+            {
+                lazy[lc] += lazy[v];
+                lazy[rc] += lazy[v];
+
+                is_lazy[lc] = true;
+                is_lazy[rc] = true;
+            }
+
+            lazy[v] = 0; // Clear
+            is_lazy[v] = false;
+        }
+    }
+
+    void build(int v, int tl, int tr, vector<int> &arr)
+    {
+        if (tl == tr)
+        {
+            tree[v] = node(arr[tl]);
+            return;
+        }
+        int tm = (tl + tr) / 2;
+        build(lc, tl, tm, arr);
+        build(rc, tm + 1, tr, arr);
+        tree[v] = merge(tree[lc], tree[rc]);
+    }
+
+    void update(int v, int tl, int tr, int l, int r, int add)
+    {
+        push(v, tl, tr);
+
+        if (r < tl || tr < l)
+            return;
+
+        if (l <= tl && tr <= r)
+        {
+
+            lazy[v] += add; // Update Lazy
+            is_lazy[v] = true;
+
+            push(v, tl, tr);
+            return;
+        }
+
+        int tm = (tl + tr) / 2;
+        update(lc, tl, tm, l, r, add);
+        update(rc, tm + 1, tr, l, r, add);
+        tree[v] = merge(tree[lc], tree[rc]);
+    }
+
+    node query(int v, int tl, int tr, int l, int r)
+    {
+
+        push(v, tl, tr);
+
+        if (l == tl && r == tr)
+            return tree[v];
+
+        int tm = (tl + tr) / 2;
+
+        if (r <= tm)
+            return query(lc, tl, tm, l, r);
+        if (l > tm)
+            return query(rc, tm + 1, tr, l, r);
+
+        node left = query(lc, tl, tm, l, tm);
+        node right = query(rc, tm + 1, tr, tm + 1, r);
+
+        return merge(left, right);
+    }
+
+    void build(vector<int> &arr)
+    {
+        build(1, 0, n - 1, arr);
+    }
+
+    void update(int l, int r, int add)
+    {
+        update(1, 0, n - 1, l, r, add);
+    }
+
+    node query(int l, int r)
+    {
+        return query(1, 0, n - 1, l, r);
+    }
+};
+
+void D_One()
+{
+    int n, q;
+    cin >> n >> q;
+
+    vector<int> a(n, 0); // initial array of zeros
+
+    LazySegTree st;
+    st.init(n);
+    st.build(a);
+
+    while (q--)
+    {
+
+        int type;
+        cin >> type;
+
+        if (type == 1)
+        {
+            int l, r;
+            int val;
+            cin >> l >> r >> val;
+            st.update(l, r - 1, val);
+        }
+        else
+        {
+            int i;
+            cin >> i;
+            cout << st.query(i, i).sum << endl;
+        }
+    }
+}
