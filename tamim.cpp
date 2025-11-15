@@ -224,10 +224,7 @@ void _print(map<T, V> v)
 
 void D_One()
 {
-    int n;
-    cin >> n;
-
-    cout << n << endl;
+    
 
 }
 
